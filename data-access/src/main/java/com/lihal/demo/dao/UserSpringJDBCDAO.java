@@ -22,6 +22,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.Bucket;
 import com.lihal.demo.model.User;
 
 @Component
@@ -33,22 +34,38 @@ public class UserSpringJDBCDAO {
 	DataSource dataSource;
 	
 	AmazonS3 client;
-	private AWSCredentials credentials = new BasicAWSCredentials("userAccess", "securityKey");
+	private AWSCredentials credentials = new BasicAWSCredentials("UserAccess", "SecuirtyKey");
 	
-	public UserSpringJDBCDAO() {
-		this.client = clientBuilder();
+	
+	public static void main(String[] args) {
+		new UserSpringJDBCDAO().readAllBuckets();
 	}
 	
-
-	
-	public  AmazonS3 clientBuilder() {
-		AmazonS3 s3client = AmazonS3ClientBuilder
+	public   AmazonS3 clientBuilder() {
+		 client = AmazonS3ClientBuilder
 				  .standard()
 				  .withCredentials(new AWSStaticCredentialsProvider(credentials))
 				  .withRegion(Regions.AP_SOUTH_1)
 				  .build();
-		System.out.println(s3client);
-		return s3client;
+		System.out.println(client);
+		return client;
+	}
+	
+	
+	
+	public void readAllBuckets() {
+		
+		if(client == null)
+			clientBuilder();
+		
+		List<Bucket> buckets = client.listBuckets();
+		if(buckets != null && buckets.size() > 0) {
+			System.out.println(buckets.get(0).getName());
+		}else {
+			System.out.println("No Buckets Found");
+		}
+		
+		
 	}
 	
 	
