@@ -1,7 +1,16 @@
 package com.lihal.demo.model;
 
 public class User {
+	
+	
 
+	public User(int userId, String userName, String userEmail, String userAddress) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.userEmail = userEmail;
+		this.userAddress = userAddress;
+	}
 	private int userId;
 	private String userName;
 	private String userEmail;
